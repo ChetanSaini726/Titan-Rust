@@ -12,7 +12,7 @@ use vulkano::{Handle, Version, VulkanObject};
 fn main() {
     let sdl_context = sdl2::init().unwrap();
     let video_subsystem = sdl_context.video().unwrap();
-    let display_res = 0;
+    let display_res = 10;
     let width = video_subsystem.display_mode(0, display_res).unwrap().w;
     let height = video_subsystem.display_mode(0, display_res).unwrap().h;
     let hz = video_subsystem
@@ -21,7 +21,8 @@ fn main() {
         .refresh_rate;
     println!("{}x{}x{}", width, height, hz);
 
-    let window = video_subsystem.window("Titan Engine", width as u32, height as u32)
+    let window = video_subsystem
+        .window("Titan Engine", width as u32, height as u32)
         .vulkan()
         .build()
         .unwrap();
@@ -38,18 +39,20 @@ fn main() {
     let surface_handle = window
         .vulkan_create_surface(instance.internal_object().as_raw() as VkInstance)
         .unwrap();
-    let surface = unsafe {
+    let _surface = unsafe {
         Surface::from_raw_surface(instance, Handle::from_raw(surface_handle), window.context())
     };
 
     let mut event_pump = sdl_context.event_pump().unwrap();
 
     'running: loop {
-         for event in event_pump.poll_iter() {
+        for event in event_pump.poll_iter() {
             match event {
-                Event::Quit {..} | Event::KeyDown { keycode: Some(Keycode::Escape), .. } => {
-                    break 'running
-                },
+                Event::Quit { .. }
+                | Event::KeyDown {
+                    keycode: Some(Keycode::Escape),
+                    ..
+                } => break 'running,
                 _ => {}
             }
         }
