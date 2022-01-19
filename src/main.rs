@@ -12,17 +12,26 @@ use vulkano::{Handle, Version, VulkanObject};
 fn main() {
     let sdl_context = sdl2::init().unwrap();
     let video_subsystem = sdl_context.video().unwrap();
-    
+
     let num_display_res = video_subsystem.num_display_modes(0);
     let current_display_name = video_subsystem.display_name(0);
-    let current_display_res = 10;
-    let width = video_subsystem.display_mode(0, current_display_res).unwrap().w;
-    let height = video_subsystem.display_mode(0, current_display_res).unwrap().h;
+    let current_display_res = 0;
+    let width = video_subsystem
+        .display_mode(0, current_display_res)
+        .unwrap()
+        .w;
+    let height = video_subsystem
+        .display_mode(0, current_display_res)
+        .unwrap()
+        .h;
     let hz = video_subsystem
         .display_mode(0, current_display_res)
         .unwrap()
         .refresh_rate;
-    println!("Number of Display Modes(Resolutions): {:#?}",num_display_res);
+    println!(
+        "Number of Display Modes(Resolutions): {:#?}",
+        num_display_res
+    );
     println!("Display Name: {:#?}", current_display_name);
     println!("{}x{}x{}", width, height, hz);
 
