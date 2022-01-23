@@ -47,12 +47,15 @@ fn main() {
         .iter()
         .map(|&v| CString::new(v).unwrap())
         .collect();
+        
     let instance_extension =
         InstanceExtensions::from(instance_extensions_strings.iter().map(AsRef::as_ref));
+
     let instance = Instance::new(None, Version::V1_2, &instance_extension, None).unwrap();
     let surface_handle = window
         .vulkan_create_surface(instance.internal_object().as_raw() as VkInstance)
         .unwrap();
+        
     let _surface = unsafe {
         Surface::from_raw_surface(instance, Handle::from_raw(surface_handle), window.context())
     };
@@ -62,11 +65,46 @@ fn main() {
     'running: loop {
         for event in event_pump.poll_iter() {
             match event {
+                Event::KeyDown {
+                    keycode: Some(Keycode::W),
+                    ..
+                } => {
+                    println!("W was pressed!");
+                    continue 'running;
+                }
+
+                Event::KeyDown {
+                    keycode: Some(Keycode::S),
+                    ..
+                } => {
+                    println!("S was pressed!");
+                    continue 'running;
+                }
+
+                Event::KeyDown {
+                    keycode: Some(Keycode::A),
+                    ..
+                } => {
+                    println!("A was pressed!");
+                    continue 'running;
+                }
+
+                Event::KeyDown {
+                    keycode: Some(Keycode::D),
+                    ..
+                } => {
+                    println!("D was pressed!");
+                    continue 'running;
+                }
+
+                // If we receive a Quit event, stop the program
                 Event::Quit { .. }
                 | Event::KeyDown {
                     keycode: Some(Keycode::Escape),
                     ..
-                } => break 'running,
+                } => {
+                    break 'running;
+                }
                 _ => {}
             }
         }
